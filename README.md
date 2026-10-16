@@ -8,7 +8,7 @@
 
 ## 在线访问
 
-https://fengcollects.github.io/Favorite-website.github.io/cn/
+https://fengcollects.github.io/Collect.github.io/cn/
 
 ## 说明
 
