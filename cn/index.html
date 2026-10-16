@@ -773,6 +773,47 @@
     <!-- JavaScripts initializations and stuff -->
     <script src="../assets/js/xenon-custom.js"></script>
     <script src="../assets/js/lozad.js"></script>
+    <!-- 分类卡片自动折叠：超过8张只显示前8张 -->
+    <script>
+    (function() {
+        var MAX = 8; // 每个分类直接显示的卡片数，超过自动折叠
+        document.querySelectorAll('h4.text-gray').forEach(function(h4) {
+            var rows = [], el = h4.nextElementSibling;
+            while (el && el.tagName !== 'H4' && el.tagName !== 'FOOTER') {
+                if (el.classList && el.classList.contains('row')) rows.push(el);
+                el = el.nextElementSibling;
+            }
+            if (!rows.length) return;
+            var cards = [];
+            rows.forEach(function(r) {
+                Array.prototype.forEach.call(r.children, function(c) {
+                    if (c.classList && c.classList.contains('col-sm-3')) cards.push(c);
+                });
+            });
+            if (cards.length <= MAX) return;
+            cards.forEach(function(c, i) { if (i >= MAX) c.style.display = 'none'; });
+            var wrap = document.createElement('div');
+            wrap.style.textAlign = 'center';
+            wrap.style.margin = '5px 0 25px';
+            var a = document.createElement('a');
+            a.href = 'javascript:;';
+            a.className = 'btn btn-default btn-sm';
+            var label = function(open) {
+                return open ? '\u6536\u8d77 \u25b2' : '\u5c55\u5f00\u66f4\u591a \u25bc\uff08\u5171' + cards.length + '\u4e2a\uff09';
+            };
+            a.textContent = label(false);
+            var open = false;
+            a.onclick = function() {
+                open = !open;
+                cards.forEach(function(c, i) { if (i >= MAX) c.style.display = open ? '' : 'none'; });
+                a.textContent = label(open);
+                return false;
+            };
+            wrap.appendChild(a);
+            rows[rows.length - 1].parentNode.insertBefore(wrap, rows[rows.length - 1].nextSibling);
+        });
+    })();
+    </script>
 </body>
 
 </html>
